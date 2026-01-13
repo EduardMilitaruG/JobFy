@@ -1,0 +1,30 @@
+# Credenciales
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+env/
+.venv/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Output
+output/*.csv
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
