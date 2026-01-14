@@ -1,191 +1,138 @@
 # JobFy - Multi-Site Job Scraper
 
-Herramienta de scraping en Python que extrae ofertas de trabajo desde multiples portales de empleo y las exporta a formato CSV.
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![BeautifulSoup](https://img.shields.io/badge/BeautifulSoup4-Scraping-43B02A?style=for-the-badge)
+![Requests](https://img.shields.io/badge/Requests-HTTP-2CA5E0?style=for-the-badge)
 
-## Sitios Soportados
+A Python-based web scraping tool that extracts job listings from multiple employment portals and exports them to CSV format. Built with extensibility in mind using the Template Method design pattern.
 
-| Sitio | Login | Estado | Descripcion |
-|-------|-------|--------|-------------|
-| **RemoteOK** | No | Funciona | Trabajos remotos globales (usa API JSON) |
-| **Tecnoempleo** | No | Funciona | Empleo IT en Espana |
-| InfoJobs | Si | Opcional | Principal portal en Espana |
-| LinkedIn | Si | Opcional | Red profesional global |
-| Indeed | No | Bloqueado | Proteccion anti-bot activa |
+## Supported Sites
 
-> **Recomendado:** Usa RemoteOK y Tecnoempleo para empezar. No requieren configuracion adicional.
+| Site | Login Required | Status | Description |
+|------|----------------|--------|-------------|
+| **RemoteOK** | No | Working | Global remote jobs (uses JSON API) |
+| **Tecnoempleo** | No | Working | IT jobs in Spain |
+| InfoJobs | Yes | Optional | Leading job portal in Spain |
+| LinkedIn | Yes | Optional | Global professional network |
+| Indeed | No | Blocked | Anti-bot protection active |
 
-## Inicio Rapido
+> **Recommended:** Start with RemoteOK and Tecnoempleo - no additional configuration required.
+
+## Key Features
+
+- **Multi-platform scraping** - Query multiple job sites in a single command
+- **Flexible CLI interface** - Filter by keyword, location, and specific sites
+- **Extensible architecture** - Template Method pattern for easy addition of new scrapers
+- **CSV export** - Structured output for further analysis
+- **Secure credential management** - Environment variables for sensitive data
+
+## Quick Start
 
 ```bash
-# Clonar e instalar
-git clone https://github.com/tu-usuario/JobFy.git
+# Clone and install
+git clone https://github.com/yourusername/JobFy.git
 cd JobFy
 python -m venv venv
-source venv/bin/activate  # Linux/Mac (o venv\Scripts\activate en Windows)
+source venv/bin/activate  # Linux/Mac (or venv\Scripts\activate on Windows)
 pip install -r requirements.txt
 
-# Ejecutar busqueda
+# Run a search
 python jobfy_scraper.py -s remoteok,tecnoempleo -k "python"
 ```
 
-## Tecnologias
+## Tech Stack
 
-- **Python 3.10+**
-- **requests** - Peticiones HTTP
-- **BeautifulSoup4** - Parsing HTML
-- **python-dotenv** - Variables de entorno
-- **argparse** - Interfaz CLI
+- **Python 3.10+** - Core language
+- **requests** - HTTP client
+- **BeautifulSoup4** - HTML parsing
+- **python-dotenv** - Environment variable management
+- **argparse** - CLI interface
 
-## Uso
-
-### Busquedas basicas (sin configuracion)
+## Usage Examples
 
 ```bash
-# Buscar "python" en RemoteOK y Tecnoempleo
+# Search "python" on RemoteOK and Tecnoempleo
 python jobfy_scraper.py -s remoteok,tecnoempleo -k "python"
 
-# Buscar con ubicacion
+# Search with location filter
 python jobfy_scraper.py -s tecnoempleo -k "java" -l "Madrid"
 
-# Solo RemoteOK (trabajos remotos)
+# Remote jobs only (RemoteOK default)
 python jobfy_scraper.py -k "react"
-```
 
-### Opciones CLI
-
-| Opcion | Corto | Descripcion |
-|--------|-------|-------------|
-| `--keyword` | `-k` | Termino de busqueda |
-| `--location` | `-l` | Ubicacion/ciudad |
-| `--sites` | `-s` | Sitios separados por coma |
-| `--all` | `-a` | Usar todos los sitios |
-| `--output` | `-o` | Nombre del archivo CSV |
-| `--list-sites` | | Listar sitios disponibles |
-| `--status` | | Ver estado de configuracion |
-
-### Comandos utiles
-
-```bash
-# Ver ayuda completa
-python jobfy_scraper.py --help
-
-# Ver sitios disponibles
+# View available sites
 python jobfy_scraper.py --list-sites
 
-# Ver estado de configuracion
+# Check configuration status
 python jobfy_scraper.py --status
 ```
 
-## Ejemplo de Salida
+### CLI Options
+
+| Option | Short | Description |
+|--------|-------|-------------|
+| `--keyword` | `-k` | Search term |
+| `--location` | `-l` | Location/city filter |
+| `--sites` | `-s` | Comma-separated site list |
+| `--all` | `-a` | Use all available sites |
+| `--output` | `-o` | Output CSV filename |
+| `--list-sites` | | List available sites |
+| `--status` | | Show configuration status |
+
+## Sample Output
 
 ```
-╔═══════════════════════════════════════════════════════════╗
-║       ██╗ ██████╗ ██████╗ ███████╗██╗   ██╗               ║
-║       ██║██╔═══██╗██╔══██╗██╔════╝╚██╗ ██╔╝               ║
-║       ██║██║   ██║██████╔╝█████╗   ╚████╔╝                ║
-║  ██   ██║██║   ██║██╔══██╗██╔══╝    ╚██╔╝                 ║
-║  ╚█████╔╝╚██████╔╝██████╔╝██║        ██║                  ║
-║   ╚════╝  ╚═════╝ ╚═════╝ ╚═╝        ╚═╝                  ║
-║          Multi-Site Job Scraper v2.0                      ║
-╚═══════════════════════════════════════════════════════════╝
-
-[CONFIG] Sitios seleccionados: remoteok, tecnoempleo
-[CONFIG] Busqueda: 'python'
+[CONFIG] Selected sites: remoteok, tecnoempleo
+[CONFIG] Search: 'python'
 
 ============================================================
-INICIANDO SCRAPING
+STARTING SCRAPE
 ============================================================
 
-[RemoteOK] Iniciando scraping...
+[RemoteOK] Starting scrape...
   [INFO] URL: https://remoteok.com/api
-  [OK] Encontradas 3 ofertas
+  [OK] Found 3 listings
 
-[Tecnoempleo] Iniciando scraping...
+[Tecnoempleo] Starting scrape...
   [INFO] URL: https://www.tecnoempleo.com/busqueda-empleo.php?te=python
-  [OK] Encontradas 30 ofertas
+  [OK] Found 30 listings
 
 ============================================================
-RESUMEN DE BUSQUEDA
+SEARCH SUMMARY
 ============================================================
 
-Total de ofertas encontradas: 33
+Total listings found: 33
 
-Desglose por sitio:
-  - RemoteOK: 3 ofertas
-  - Tecnoempleo: 30 ofertas
+Breakdown by site:
+  - RemoteOK: 3 listings
+  - Tecnoempleo: 30 listings
 
-[OK] Archivo guardado: output/jobs_python_20240115_143052.csv
+[OK] File saved: output/jobs_python_20240115_143052.csv
 ```
 
-### CSV Generado
-
-```csv
-job_title,company,location,salary,tags,apply_link,source
-Senior Python Developer,Cresta,Toronto,"$100,000 - $150,000","python, django, aws",https://remoteok.com/...,RemoteOK
-Desarrollador Python,TechCorp,Espana,N/A,IT/Tech,https://tecnoempleo.com/...,Tecnoempleo
-```
-
-## Configuracion Opcional (InfoJobs/LinkedIn)
-
-> **Advertencia:** InfoJobs y LinkedIn pueden bloquear cuentas por uso automatizado. Usa bajo tu responsabilidad.
-
-Si deseas usar sitios que requieren login:
-
-### 1. Crear archivo de credenciales
-
-```bash
-cp .env.example .env
-```
-
-### 2. Editar `.env` con tus datos
-
-```env
-# InfoJobs
-INFOJOBS_USERNAME=tu_email@ejemplo.com
-INFOJOBS_PASSWORD=tu_password
-
-# LinkedIn
-LINKEDIN_USERNAME=tu_email@ejemplo.com
-LINKEDIN_PASSWORD=tu_password
-```
-
-### 3. Ejecutar con todos los sitios
-
-```bash
-python jobfy_scraper.py --all -k "data engineer"
-```
-
-### Seguridad
-
-- El archivo `.env` esta en `.gitignore` y **nunca se sube a GitHub**
-- Solo `.env.example` (sin datos reales) se incluye en el repositorio
-- Cada usuario debe crear su propio `.env` localmente
-
-## Estructura del Proyecto
+## Project Structure
 
 ```
 JobFy/
-├── jobfy_scraper.py      # Script principal CLI
-├── config.py             # Configuracion y credenciales
-├── requirements.txt      # Dependencias
-├── .env.example          # Plantilla (sin datos reales)
-├── .gitignore            # Excluye .env y otros
-├── README.md
+├── jobfy_scraper.py      # Main CLI script
+├── config.py             # Configuration and credentials
+├── requirements.txt      # Dependencies
+├── .env.example          # Template (no real data)
 ├── scrapers/
 │   ├── __init__.py
-│   ├── base.py           # Clase base abstracta
-│   ├── remoteok.py       # API JSON de RemoteOK
-│   ├── tecnoempleo.py    # Scraper Tecnoempleo
-│   ├── infojobs.py       # Scraper InfoJobs (requiere login)
-│   ├── linkedin.py       # Scraper LinkedIn (requiere login)
-│   └── indeed.py         # Scraper Indeed (bloqueado)
+│   ├── base.py           # Abstract base class
+│   ├── remoteok.py       # RemoteOK JSON API
+│   ├── tecnoempleo.py    # Tecnoempleo scraper
+│   ├── infojobs.py       # InfoJobs (requires login)
+│   ├── linkedin.py       # LinkedIn (requires login)
+│   └── indeed.py         # Indeed (blocked)
 └── output/
-    └── *.csv             # Archivos generados
+    └── *.csv             # Generated files
 ```
 
-## Arquitectura
+## Architecture
 
-El proyecto usa el patron **Template Method** con una clase base abstracta:
+The project implements the **Template Method** design pattern with an abstract base class:
 
 ```python
 class BaseScraper(ABC):
@@ -199,67 +146,75 @@ class BaseScraper(ABC):
     def parse_job_listings(self, html) -> list[JobOffer]: ...
 
     def scrape(self, keyword, location) -> list[JobOffer]:
-        # Logica comun: login -> fetch -> parse
+        # Common logic: login -> fetch -> parse
 ```
 
-Esto permite agregar nuevos sitios facilmente heredando de `BaseScraper`.
+This architecture enables easy addition of new job sites by inheriting from `BaseScraper`.
 
-## Agregar Nuevos Sitios
+## Adding New Sites
 
-1. Crear `scrapers/nuevo_sitio.py`
-2. Heredar de `BaseScraper`
-3. Implementar los metodos abstractos
-4. Registrar en `config.py` y `jobfy_scraper.py`
+1. Create `scrapers/new_site.py`
+2. Inherit from `BaseScraper`
+3. Implement the abstract methods
+4. Register in `config.py` and `jobfy_scraper.py`
 
 ```python
 from .base import BaseScraper, JobOffer
 
-class NuevoSitioScraper(BaseScraper):
+class NewSiteScraper(BaseScraper):
     def _perform_login(self) -> bool:
-        return True  # o implementar login
+        return True  # or implement login
 
     def get_search_url(self, keyword: str, location: str) -> str:
-        return f"https://nuevositio.com/jobs?q={keyword}"
+        return f"https://newsite.com/jobs?q={keyword}"
 
     def parse_job_listings(self, html: str) -> list[JobOffer]:
-        # Implementar parsing con BeautifulSoup
+        # Implement parsing with BeautifulSoup
         ...
 ```
 
-## Limitaciones
+## Optional Configuration (InfoJobs/LinkedIn)
 
-- **Indeed:** Actualmente bloqueado por proteccion anti-bot (error 403)
-- **InfoJobs/LinkedIn:** Pueden mostrar captchas o bloquear cuentas
-- **Estructura HTML:** Los sitios cambian frecuentemente sus selectores
-- **Rate limiting:** Requests excesivos pueden resultar en bloqueos temporales
+> **Warning:** InfoJobs and LinkedIn may block accounts for automated use. Use at your own risk.
 
-## Disclaimer - Uso Etico
+```bash
+# Create credentials file
+cp .env.example .env
 
-Este proyecto es **exclusivamente con fines educativos y de portfolio**.
+# Edit .env with your credentials
+INFOJOBS_USERNAME=your_email@example.com
+INFOJOBS_PASSWORD=your_password
+LINKEDIN_USERNAME=your_email@example.com
+LINKEDIN_PASSWORD=your_password
+```
 
-- Revisa los **Terminos de Servicio** de cada sitio
-- **LinkedIn tiene politicas muy estrictas** contra el scraping
-- Respeta el archivo `robots.txt`
-- No uses los datos con **fines comerciales** sin autorizacion
-- Considera usar **APIs oficiales** cuando esten disponibles:
-  - [LinkedIn API](https://developer.linkedin.com/)
-  - [Indeed API](https://developer.indeed.com/)
+## Known Limitations
 
-**El autor no se hace responsable del uso indebido de esta herramienta.**
+- **Indeed:** Currently blocked by anti-bot protection (403 error)
+- **InfoJobs/LinkedIn:** May display captchas or block accounts
+- **HTML Structure:** Sites frequently change their DOM selectors
+- **Rate Limiting:** Excessive requests may result in temporary blocks
 
-## Mejoras Futuras
+## Skills Demonstrated
 
-- [ ] Paginacion (multiples paginas de resultados)
-- [ ] Exportacion a JSON y SQLite
-- [ ] Filtrado por salario minimo
-- [ ] Notificaciones (email/Telegram)
-- [ ] Interfaz web con Flask/FastAPI
-- [ ] Tests unitarios
+- Web scraping with BeautifulSoup and requests
+- Object-oriented design patterns (Template Method)
+- CLI development with argparse
+- Environment variable management
+- API integration (RemoteOK JSON API)
+- Error handling and graceful degradation
+- Code organization and project structure
 
-## Licencia
+## Author
 
-MIT License - Libre para uso personal y educativo.
+**Eduard Militaru**
+- GitHub: [@EduardMilitaruG](https://github.com/EduardMilitaruG)
+- LinkedIn: [Eduard Militaru](https://linkedin.com/in/eduardmilitaru)
+
+## License
+
+MIT License - Free for personal and educational use.
 
 ---
 
-Desarrollado como proyecto de portfolio | Python & Web Scraping
+*Built as a portfolio project demonstrating Python and web scraping skills*
