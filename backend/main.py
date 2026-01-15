@@ -208,8 +208,7 @@ def run_scrape(
                 continue
 
             scraper_class = SCRAPERS[site_name]
-            config = SITES_CONFIG[site_name]
-            scraper = scraper_class(config)
+            scraper = scraper_class()  # Scrapers initialize their own config
 
             try:
                 jobs = scraper.scrape(keyword=keyword, location=location)
